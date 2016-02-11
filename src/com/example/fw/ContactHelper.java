@@ -29,10 +29,23 @@ public class ContactHelper extends HelperBase{
 			.click("Save")
 			.winWaitAndActivate("AddressBook Portable", "", 1000);
 	}
+	
+	private void selectFirstContact(){
+		manager.getAutoItHelper()
+		.winWaitAndActivate("AddressBook Portable", "", 1000)
+		.focus("TListView1")
+		.send("{DOWN}{SPACE}");
+	}
+	
+	private void selectAllContacts(){
+		manager.getAutoItHelper()
+		.winWaitAndActivate("AddressBook Portable", "", 1000)
+		.click("Select All");
+	}
 
 	public Contact getFirstContact() {
-		manager.getAutoItHelper().focus("TListView1")
-			.send("{DOWN}{SPACE}")
+		selectFirstContact();
+		manager.getAutoItHelper()
 			.click("Edit")
 			.winWaitAndActivate("Update Contact", "", 1000);
 		Contact contact = new Contact()
@@ -42,5 +55,24 @@ public class ContactHelper extends HelperBase{
 			.click("Cancel")
 			.winWaitAndActivate("AddressBook Portable", "", 1000);
 		return contact;
+	}
+	
+	public ContactHelper deleteContact(){
+		selectFirstContact();
+		manager.getAutoItHelper().click("Delete");
+		return this;
+	}
+	
+	public ContactHelper deleteAllContacts(){
+		selectAllContacts();
+		manager.getAutoItHelper().click("Delete");
+		return this;
+	}
+	
+	public void confirmDeleteContact(){
+		manager.getAutoItHelper()
+		.winWaitAndActivate("Confirm", "", 1000)
+		.click("&Yes")
+		.winWaitAndActivate("AddressBook Portable", "", 1000);
 	}
 }
